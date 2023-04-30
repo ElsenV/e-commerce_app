@@ -6,6 +6,8 @@ const initialState = {
     count: 0,
     total: 0,
   },
+  isLogin: false,
+  username: "",
 };
 
 const productSlice = createSlice({
@@ -18,7 +20,6 @@ const productSlice = createSlice({
       );
 
       if (hasProduct) {
-        
         state.cart.products.map((product) =>
           product.id === action.payload.product.id
             ? (product.quantity += action.payload.quantity) &&
@@ -27,7 +28,6 @@ const productSlice = createSlice({
             : product
         );
       } else if (!hasProduct) {
-        
         state.cart.products = [
           ...state.cart.products,
           {
@@ -50,8 +50,14 @@ const productSlice = createSlice({
       state.cart.count -= 1;
       state.cart.total -= action.payload.totalPrice;
     },
+    CHECK_FOR_LOGIN(state, action) {
+     
+      state.isLogin = !state.isLogin;
+      state.username = action.payload;
+    },
   },
 });
 
-export const { ADD_CART, DELETE_PRODUCT } = productSlice.actions;
+export const { ADD_CART, DELETE_PRODUCT, CHECK_FOR_LOGIN } =
+  productSlice.actions;
 export default productSlice.reducer;

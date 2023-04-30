@@ -1,4 +1,5 @@
 import Category from "@/components/Category";
+import { CHECK_FOR_LOGIN } from "@/state/reducer";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -11,10 +12,11 @@ export default function Home({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const a = await fetch("https://fakestoreapi.com/products");
-  const res = await a.json();
+export async function getServerSideProps() {
+ 
+  const data = await fetch("https://fakestoreapi.com/products");
+  const res = await data.json();
   return {
-    props: { data: res }, // will be passed to the page component as props
+    props: { data: res },
   };
 }
