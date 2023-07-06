@@ -1,22 +1,25 @@
 import Category from "@/components/Category";
-import { CHECK_FOR_LOGIN } from "@/state/reducer";
-import { Inter } from "next/font/google";
+import Loading from "@/components/Loading";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home({ data }) {
+export default function Home({ data, status }) {
   return (
     <div className="p-4 sm:p-10">
-      <Category data={data} />
+      {status === 200 ? (
+        <Category data={data} />
+      ) : (
+        <div className="flex justify-center items-center">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 }
 
 export async function getServerSideProps() {
- 
   const data = await fetch("https://fakestoreapi.com/products");
   const res = await data.json();
+
   return {
-    props: { data: res },
+    props: { data: res, status: data.status },
   };
 }

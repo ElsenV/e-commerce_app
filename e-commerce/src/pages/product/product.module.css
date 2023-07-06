@@ -1,0 +1,9 @@
+.product_page {
+  height: calc(100vh - 283.969px);
+}
+
+@media only screen and (max-width: 1472px) {
+  .product_page {
+    height: auto;
+  }
+}

@@ -7,7 +7,9 @@ const initialState = {
     total: 0,
   },
   isLogin: false,
-  username: "",
+  username: null,
+  user_data: {},
+  all_products: [],
 };
 
 const productSlice = createSlice({
@@ -50,14 +52,33 @@ const productSlice = createSlice({
       state.cart.count -= 1;
       state.cart.total -= action.payload.totalPrice;
     },
-    CHECK_FOR_LOGIN(state, action) {
-     
-      state.isLogin = !state.isLogin;
-      state.username = action.payload;
+
+    RESET_PRODUCTS(state) {
+      state.cart.products = [];
+      state.cart.count = 0;
+      state.cart.total = 0;
+      state.isLogin = false;
+    },
+    USER_DATA(state, action) {
+      state.user_data = action.payload;
+      state.username = action.payload.Username;
+      if (action.payload.Username) {
+        state.isLogin = true;
+      } else {
+        state.isLogin = false;
+      }
+    },
+    ALL_PRODUCTS(state, action) {
+      state.all_products = action.payload;
     },
   },
 });
 
-export const { ADD_CART, DELETE_PRODUCT, CHECK_FOR_LOGIN } =
-  productSlice.actions;
+export const {
+  ADD_CART,
+  DELETE_PRODUCT,
+  RESET_PRODUCTS,
+  USER_DATA,
+  ALL_PRODUCTS,
+} = productSlice.actions;
 export default productSlice.reducer;

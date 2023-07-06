@@ -24,7 +24,7 @@ const AddInfo = ({ Username }) => {
     validationSchema: validation,
     onSubmit: async (values) => {
       try {
-        const res = await fetch("http://localhost:3000/api/addinfo", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/addinfo`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...values, Username }),
@@ -35,7 +35,7 @@ const AddInfo = ({ Username }) => {
           router.replace("/");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
   });

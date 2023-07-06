@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
 
 export default async function handler(req, res) {
-  dbConnect();
+  await dbConnect();
   if (req.method === "POST") {
     const { Email, Password } = req.body;
 
@@ -33,8 +33,8 @@ export default async function handler(req, res) {
         path: "/",
       });
 
-      res.setHeader("Set-Cookie", serialized);
-      res.status(201).json(existedUser.Username);
+      await res.setHeader("Set-Cookie", serialized);
+      res.status(201).json(existedUser);
     } catch (error) {
       res.status(500).json(error);
     }

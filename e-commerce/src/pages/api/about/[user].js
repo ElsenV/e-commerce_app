@@ -35,10 +35,13 @@ export default async function handler(req, res) {
       const updatedUser = await User.findOneAndUpdate(
         { Username },
         {
-          Username: values.nameSurname,
+          Username: values.username,
           Phone: values.Phone,
           Address: values.Address,
           OptionalDemand: values.Info,
+        },
+        {
+          new: true,
         }
       );
 
@@ -46,7 +49,7 @@ export default async function handler(req, res) {
         return res.status(500).json("User data couldn't update");
       }
 
-      res.status(200).json(updatedUser, "UPDATED");
+      res.status(200).json(updatedUser);
     } catch (error) {
       res.status(500).json(error);
     }

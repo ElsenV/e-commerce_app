@@ -2,7 +2,7 @@ import User from "@/models/User.js";
 import dbConnect from "@/util/mongo.js";
 
 export default async function handler(req, res) {
-  dbConnect();
+  await dbConnect();
 
   if (req.method === "PUT") {
     const { nameSurname, Phone, Address, Info, Username } = req.body;

@@ -32,50 +32,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    // carts: {
-    //   type: [
-    //     {
-    //       products: {
-    //         type: [
-    //           {
-    //             id: {
-    //               type: String,
-    //               required: true,
-    //             },
-    //             img: {
-    //               type: String,
-    //               required: true,
-    //             },
-    //             title: {
-    //               type: String,
-    //               required: true,
-    //             },
-    //             desc: {
-    //               type: String,
-    //               required: true,
-    //             },
-    //             price: {
-    //               type: Number,
-    //               required: true,
-    //             },
-    //             quantity: {
-    //               type: Number,
-    //               required: true,
-    //             },
-    //           },
-    //         ],
-    //       },
-    //       count: {
-    //         type: Number,
-    //         required: true,
-    //       },
-    //       total: {
-    //         type: Number,
-    //         required: true,
-    //       },
-    //     },
-    //   ],
-    // },
+    cart: [
+      {
+        id: Number,
+        quantity: Number,
+      },
+    ],
+    resetPasswordToken:String,
+    resetPasswordExp:Date
   },
   { timestamps: true }
 );

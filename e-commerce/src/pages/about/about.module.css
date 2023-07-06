@@ -1,0 +1,15 @@
+.container {
+  height: calc(100vh - 283.969px);
+}
+
+.form {
+  width: 700px;
+}
+@media only screen and (max-width: 767px) {
+  .container {
+    height: calc(100vh - 270.469px);
+  }
+  .form {
+    width: 500px;
+  }
+}

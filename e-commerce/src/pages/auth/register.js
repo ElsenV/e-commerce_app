@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import Link from "next/link";
-import { Router } from "next/router";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { USER_DATA } from "@/state/reducer";
+import Loading from "@/components/Loading";
+import Style from "../../styles/container.module.css";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [Error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const validation = Yup.object().shape({
     Username: Yup.string().required(),
@@ -22,9 +27,10 @@ const Register = () => {
       Password: "",
     },
     validationSchema: validation,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
+      setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/auth/register", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/register`, {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({ values }),
@@ -33,7 +39,10 @@ const Register = () => {
         if (!data.Username) {
           return setError(data);
         }
-        router.replace(`/addinfo/${data.Username}`);
+        await router.replace(`/addinfo/${data.Username}`);
+        localStorage.setItem("Username", data.Username);
+        dispatch(USER_DATA(data));
+        setLoading(false);
         return data;
       } catch (error) {
         setError(error);
@@ -41,60 +50,72 @@ const Register = () => {
     },
   });
   const { errors, touched, handleSubmit, handleChange } = formik;
+
   return (
     <div
-      className="w-full flex justify-center items-center flex-col"
-      style={{ height: "calc(100vh - 280px)" }}
+      className={`${Style.container} w-full flex justify-center items-center flex-col`}
     >
-      {Error && <p>{Error}</p>}
-      <form onSubmit={handleSubmit} className=" flex flex-col">
-        {errors.Username && touched.Username && (
-          <p className="text-red-500 text-lg sm:text-xl py-3">
-            {errors.Username}
+      {!loading && (
+        <div>
+          <p className="text-5xl font-bold text-center mb-5">Create Account</p>
+          {Error && <p className="text-xl sm:text-2xl md:text-3xl">{Error}</p>}
+          <form onSubmit={handleSubmit} className=" flex flex-col">
+            {errors.Username && touched.Username && (
+              <p className="text-red-500 text-lg sm:text-xl py-3">
+                {errors.Username}
+              </p>
+            )}
+            <input
+              type="text"
+              name="Username"
+              onChange={handleChange}
+              placeholder="Username"
+              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+            />
+            {errors.Email && touched.Email && (
+              <p className="text-red-500 text-lg sm:text-xl py-3">
+                {errors.Email}
+              </p>
+            )}
+            <input
+              type="text"
+              name="Email"
+              onChange={handleChange}
+              placeholder="Email"
+              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+            />
+            {errors.Password && touched.Password && (
+              <p className="text-red-500 text-lg sm:text-xl py-3">
+                {errors.Password}
+              </p>
+            )}
+            <input
+              type="password"
+              name="Password"
+              onChange={handleChange}
+              placeholder="Password"
+              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+            />
+            <button
+              type="submit"
+              className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
+            >
+              Register
+            </button>
+          </form>
+          <p className="text-2xl">
+            if you have an account please{" "}
+            <Link href={"/auth/login"}>
+              <span className="underline text-3xl text-blue-800"> Login</span>
+            </Link>
           </p>
-        )}
-        <input
-          type="text"
-          name="Username"
-          onChange={handleChange}
-          placeholder="Username"
-          className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
-        />
-        {errors.Email && touched.Email && (
-          <p className="text-red-500 text-lg sm:text-xl py-3">{errors.Email}</p>
-        )}
-        <input
-          type="text"
-          name="Email"
-          onChange={handleChange}
-          placeholder="Email"
-          className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
-        />
-        {errors.Password && touched.Password && (
-          <p className="text-red-500 text-lg sm:text-xl py-3">
-            {errors.Password}
-          </p>
-        )}
-        <input
-          type="password"
-          name="Password"
-          onChange={handleChange}
-          placeholder="Password"
-          className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
-        />
-        <button
-          type="submit"
-          className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
-        >
-          Register
-        </button>
-      </form>
-      <p className="text-2xl">
-        if you have an account please{" "}
-        <Link href={"/auth/login"}>
-          <span className="underline text-3xl text-blue-800"> Login</span>
-        </Link>
-      </p>
+        </div>
+      )}
+      {loading && (
+        <div>
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };

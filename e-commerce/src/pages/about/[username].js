@@ -1,10 +1,17 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { CHECK_FOR_USERNAME } from "@/state/reducer";
+import { useRouter } from "next/router";
+import Style from "./about.module.css";
 
 const About = ({ user }) => {
+  const router = useRouter();
+
+  const dispatch = useDispatch();
   /**VALIDATION */
   const validation = Yup.object().shape({
-    nameSurname: Yup.string().required(),
+    username: Yup.string().required(),
     Phone: Yup.string().required().min(12, "Must be more than 10 characters"),
     Address: Yup.string().required(),
     Info: Yup.string(),
@@ -13,7 +20,7 @@ const About = ({ user }) => {
   /** FORMIK FORM  */
   const formik = useFormik({
     initialValues: {
-      nameSurname: user?.Username,
+      username: user?.Username,
       Phone: user?.Phone,
       Address: user?.Address,
       Info: user?.OptionalDemand,
@@ -22,16 +29,19 @@ const About = ({ user }) => {
     onSubmit: async (values) => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/about/${user.Username}`,
+          `${process.env.NEXT_PUBLIC_BACK_URL}/api/about/${user.Username}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),
           }
         );
+
         const data = await res.json();
+        dispatch(CHECK_FOR_USERNAME(data.Username));
+        router.replace(`/about/${data.Username}`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     },
   });
@@ -39,23 +49,20 @@ const About = ({ user }) => {
   const { errors, touched, values, handleSubmit, handleChange } = formik;
 
   return (
-    <div
-      className="w-full   md:grid grid-cols-4 gap-10   p-10"
-      style={{ height: "calc(100vh - 280px)" }}
-    >
-      <div className=" md:col-span-2 ">
+    <div className={`${Style.container} w-full pt-4 flex justify-center `}>
+      <div className={`${Style.form}`}>
         <form onSubmit={handleSubmit}>
           <p className="text-xl sm:text-2xl md:text-3xl">Username</p>
-          {errors.nameSurname && touched.nameSurname && (
-            <p className="text-red-500 pb-1 text-lg">{errors.nameSurname}</p>
+          {errors.username && touched.username && (
+            <p className="text-red-500 pb-1 text-lg">{errors.username}</p>
           )}
           <input
             type="text"
-            name="nameSurname"
+            name="username"
             className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Name,Surname "
             onChange={handleChange}
-            value={values.nameSurname}
+            value={values.username}
           />
           <p className="text-xl sm:text-2xl md:text-3xl">Phone</p>
           {errors.Phone && touched.Phone && (
@@ -105,7 +112,9 @@ const About = ({ user }) => {
 export default About;
 
 export async function getServerSideProps({ params }) {
-  const res = await fetch(`http://localhost:3000/api/about/${params.username}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACK_URL}/api/about/${params.username}`
+  );
   const data = await res.json();
 
   return {

@@ -3,14 +3,23 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { CHECK_FOR_LOGIN } from "@/state/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_CART,
+  ALL_PRODUCTS,
+  RESET_PRODUCTS,
+  USER_DATA,
+} from "@/state/reducer";
+import Loading from "@/components/Loading";
+import Style from "../../styles/container.module.css";
 
-const Login = () => {
+const Login = ({ allProducts }) => {
   const [Error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
+  dispatch(RESET_PRODUCTS());
 
   const validation = Yup.object().shape({
     Email: Yup.string().required().email(),
@@ -23,74 +32,124 @@ const Login = () => {
       Password: "",
     },
     validationSchema: validation,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values) => {
+      setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/auth/login", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/login`, {
           method: "POST",
-          headers: { "Content-type": "Application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),
         });
         const data = await res.json();
-        if (!data) {
-          return setError(data);
-        }
 
-        localStorage.setItem("Username", data);
-        dispatch(CHECK_FOR_LOGIN(data));
-        router.replace("/cartlists");
-        return data;
+        if (
+          !data ||
+          data === "There is not User" ||
+          data === "Invalid Email or Password" ||
+          data === undefined
+        ) {
+          setLoading(false);
+          return setError(data);
+        } else {
+          dispatch(ALL_PRODUCTS(allProducts));
+          await router.replace("/cartlists");
+          dispatch(USER_DATA(data));
+          localStorage.setItem("Username", data.Username);
+          setLoading(false);
+
+          data.cart.map((cartProduct) =>
+            allProducts.map((product) =>
+              product.id === cartProduct.id
+                ? dispatch(
+                    ADD_CART({ product, quantity: cartProduct.quantity })
+                  )
+                : null
+            )
+          );
+        }
       } catch (error) {
         setError(error);
       }
     },
   });
+
   const { values, errors, touched, handleSubmit, handleChange } = formik;
   return (
     <div
-      className=" w-full flex  justify-center items-center flex-col"
-      style={{ height: "calc(100vh - 280px)" }}
+      className={`${Style.container} w-full flex  justify-center items-center flex-col`}
     >
-      {Error && <p>{Error}</p>}
-      <form onSubmit={handleSubmit} className=" flex flex-col">
-        {errors.Email && touched.Email && (
-          <p className="text-red-500 text-lg sm:text-xl py-3">{errors.Email}</p>
-        )}
-        <input
-          type="text"
-          name="Email"
-          value={values.Email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
-        />
-        {errors.Password && touched.Password && (
-          <p className="text-red-500 text-lg sm:text-xl py-3">
-            {errors.Password}
+      {!loading && (
+        <div>
+          <p className="text-5xl font-bold text-center mb-5">Login</p>
+          {Error && (
+            <p className="text-xl sm:text-2xl md:text-3xl text-red-500 mb-3">
+              {Error}
+            </p>
+          )}
+          <form onSubmit={handleSubmit} className=" flex flex-col">
+            {errors.Email && touched.Email && (
+              <p className="text-red-500 text-lg sm:text-xl py-3">
+                {errors.Email}
+              </p>
+            )}
+            <input
+              type="text"
+              name="Email"
+              value={values.Email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+            />
+            {errors.Password && touched.Password && (
+              <p className="text-red-500 text-lg sm:text-xl py-3">
+                {errors.Password}
+              </p>
+            )}
+            <input
+              type="password"
+              name="Password"
+              value={values.Password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl  mb-5"
+            />
+            <button
+              type="submit"
+              className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
+            >
+              Login
+            </button>
+          </form>
+          <p className="text-2xl mb-5">
+            If you forgot your password,
+            <Link href="reset-password-form">
+              <span className=" text-3xl text-blue-800"> Click </span>
+            </Link>
           </p>
-        )}
-        <input
-          type="password"
-          name="Password"
-          value={values.Password}
-          onChange={handleChange}
-          placeholder="Password"
-          className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl  mb-5"
-        />
-        <button
-          type="submit"
-          className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
-        >
-          Login
-        </button>
-      </form>
-      <p className="text-2xl">
-        If you have not account please &nbsp;
-        <Link href={"/auth/register"}>
-          <span className="underline text-3xl text-blue-800">REGISTER</span>
-        </Link>
-      </p>
+
+          <p className="text-2xl">
+            If you have not account please &nbsp;
+            <Link href={"register"}>
+              <span className="text-3xl text-blue-800">REGISTER</span>
+            </Link>
+          </p>
+        </div>
+      )}
+      {loading && (
+        <div>
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };
 
 export default Login;
+
+export async function getServerSideProps() {
+  const data = await fetch("https://fakestoreapi.com/products");
+  const res = await data.json();
+  return {
+    props: { allProducts: res },
+  };
+}
