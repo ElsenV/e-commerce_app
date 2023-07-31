@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   ADD_CART,
   ALL_PRODUCTS,
@@ -11,7 +11,6 @@ import {
   USER_DATA,
 } from "@/state/reducer";
 import Loading from "@/components/Loading";
-import Style from "../../styles/container.module.css";
 
 const Login = ({ allProducts }) => {
   const [Error, setError] = useState(null);
@@ -35,11 +34,14 @@ const Login = ({ allProducts }) => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values),
+          }
+        );
         const data = await res.json();
 
         if (
@@ -76,11 +78,13 @@ const Login = ({ allProducts }) => {
   const { values, errors, touched, handleSubmit, handleChange } = formik;
   return (
     <div
-      className={`${Style.container} w-full flex  justify-center items-center flex-col`}
+      className={`h-smaller_767 md:h-bigger_768 w-full flex  justify-center items-center flex-col`}
     >
       {!loading && (
         <div>
-          <p className="text-5xl font-bold text-center mb-5">Login</p>
+          <p className="text-2xl sm:text-3xl md:text-5xl font-bold text-center mb-5">
+            Login
+          </p>
           {Error && (
             <p className="text-xl sm:text-2xl md:text-3xl text-red-500 mb-3">
               {Error}
@@ -98,7 +102,7 @@ const Login = ({ allProducts }) => {
               value={values.Email}
               onChange={handleChange}
               placeholder="Email"
-              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+              className="p-3 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
             />
             {errors.Password && touched.Password && (
               <p className="text-red-500 text-lg sm:text-xl py-3">
@@ -111,26 +115,31 @@ const Login = ({ allProducts }) => {
               value={values.Password}
               onChange={handleChange}
               placeholder="Password"
-              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl  mb-5"
+              className="p-3 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
             />
             <button
               type="submit"
-              className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
+              className="p-4 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
             >
               Login
             </button>
           </form>
-          <p className="text-2xl mb-5">
+          <p className="text-xl md:text-2xl mb-5">
             If you forgot your password,
             <Link href="reset-password-form">
-              <span className=" text-3xl text-blue-800"> Click </span>
+              <span className="text-2xl md:text-3xl text-blue-800">
+                {" "}
+                Click{" "}
+              </span>
             </Link>
           </p>
 
-          <p className="text-2xl">
+          <p className="text-xl md:text-2xl">
             If you have not account please &nbsp;
             <Link href={"register"}>
-              <span className="text-3xl text-blue-800">REGISTER</span>
+              <span className="text-2xl md:text-3xl text-blue-800">
+                REGISTER
+              </span>
             </Link>
           </p>
         </div>

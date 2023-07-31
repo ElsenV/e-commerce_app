@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Style from "../../../styles/container.module.css";
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Checked from "@/components/Checked";
@@ -50,7 +50,7 @@ const ResetPassword = ({ expired, token }) => {
 
   return (
     <div
-      className={`${Style.container} w-full flex justify-center items-center`}
+      className={`h-smaller_767 md:h-bigger_768 w-full flex justify-center items-center`}
     >
       {expired ? (
         <p className="text-6xl">Expired Please try again</p>

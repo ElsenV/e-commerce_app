@@ -14,10 +14,7 @@ const sendMail = async (email, resetLink) => {
   const message = `<h2>Reset Password</h2> </br>
                 <p>A password change has been requested for your account.If this was you,please use link below to reset your password</p>  
 
-                <form action=${resetLink}>
-                <input type="submit"value="Reset password" style="font-size:1.2rem; color:white;padding:15px;border:none;background-color:black"/>
-                </form>
-                
+                 <p>${resetLink}</p>
                 `;
 
   let info = await transporter.sendMail({

@@ -44,8 +44,8 @@ const AddInfo = ({ Username }) => {
 
   return (
     <div
-      className="w-full   md:grid grid-cols-4 gap-10   p-10"
-      style={{ height: "calc(100vh - 280px)" }}
+      className="w-full h-smaller_767 md:h-bigger_768 md:grid grid-cols-4 gap-10   p-10"
+      // style={{ height: "calc(100vh - 280px)" }}
     >
       <div className=" md:col-span-2 ">
         <form onSubmit={handleSubmit}>

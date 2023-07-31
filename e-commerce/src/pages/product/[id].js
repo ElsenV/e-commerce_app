@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { ADD_CART } from "@/state/reducer";
 import Link from "next/link";
-import Style from "./product.module.css";
 
 const ProductPage = ({ data }) => {
   const dispatch = useDispatch();
@@ -12,11 +11,14 @@ const ProductPage = ({ data }) => {
   const addToCart = async () => {
     try {
       const username = localStorage.getItem("Username");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/add_to_cart`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity, data, username }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/add_to_cart`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ quantity, data, username }),
+        }
+      );
       const res_json = await res.json();
       if (res_json === "Unauthorized" || res_json === "User not exist") {
         return console.log("error is", res_json);
@@ -29,7 +31,7 @@ const ProductPage = ({ data }) => {
 
   return (
     <div
-      className={` ${Style.product_page} grid grid-cols-1 md:grid-cols-2 p-5 md:p-20  w-full `}
+      className={` max-[1472px]:h-auto h-bigger_768 grid grid-cols-1 md:grid-cols-2 p-5 md:p-20  w-full `}
     >
       <div className="m-auto">
         <Image src={data.image} width={300} height={300} alt="product img" />

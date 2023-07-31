@@ -5,11 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
-import {
-  RESET_PRODUCTS,
-} from "@/state/reducer";
+import { RESET_PRODUCTS } from "@/state/reducer";
 import { useRouter } from "next/router";
-import { Caveat } from "@next/font/google";
+import { Caveat } from "next/font/google";
 
 const caveat = Caveat({ subsets: ["latin"] });
 
@@ -20,7 +18,9 @@ const Navbar = () => {
 
   const logOut = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`
+      );
       const data = await res.json();
       await router.push("/");
       dispatch(RESET_PRODUCTS());

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Style from "../../styles/container.module.css";
 import Loading from "@/components/Loading";
 import Checked from "@/components/Checked";
 
@@ -31,16 +30,15 @@ const ResetPasswordForm = () => {
           }
         );
         const data = await res.json();
-       
+
         if (data === "Reset Token sended Email") {
           setLoading(false);
           setChecked(true);
         } else {
           setLoading(false);
+          setChecked(true);
           setError(data);
         }
-
-       
       } catch (error) {
         console.error(error);
       }
@@ -51,7 +49,7 @@ const ResetPasswordForm = () => {
 
   return (
     <div
-      className={`${Style.container} w-full flex justify-center items-center`}
+      className={`h-smaller_767 md:h-bigger_768 w-full flex justify-center items-center`}
     >
       {!loading ? (
         <div>
@@ -68,11 +66,11 @@ const ResetPasswordForm = () => {
                 value={values.Email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+                className="p-2 sm:p-4 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
               />
               <button
                 type="submit"
-                className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg "
+                className="p-3 sm:p-5 bg-black text-white text-md sm:text-xl lg:text-2xl rounded-lg "
               >
                 Reset Password
               </button>
@@ -80,9 +78,11 @@ const ResetPasswordForm = () => {
           ) : (
             <div>
               {!Error ? (
-                <Checked msg="Reset link sended to Email" route={null} />
+                <Checked msg="Reset link has sended to Email" route={null} />
               ) : (
-                <p className="text-8xl text-red-500">{Error}</p>
+                <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl text-red-500">
+                  {Error}
+                </p>
               )}
             </div>
           )}

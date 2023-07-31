@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { USER_DATA } from "@/state/reducer";
 import Loading from "@/components/Loading";
-import Style from "../../styles/container.module.css";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -30,11 +29,14 @@ const Register = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/register`, {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ values }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/register`,
+          {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({ values }),
+          }
+        );
         const data = await res.json();
         if (!data.Username) {
           return setError(data);
@@ -53,11 +55,17 @@ const Register = () => {
 
   return (
     <div
-      className={`${Style.container} w-full flex justify-center items-center flex-col`}
+      className={`${
+        Object.keys(errors).length > 0 || Error
+          ? `h-register_page`
+          : `h-smaller_76 md:h-bigger_768`
+      }    w-full flex justify-center items-center flex-col`}
     >
       {!loading && (
         <div>
-          <p className="text-5xl font-bold text-center mb-5">Create Account</p>
+          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-5">
+            Create Account
+          </p>
           {Error && <p className="text-xl sm:text-2xl md:text-3xl">{Error}</p>}
           <form onSubmit={handleSubmit} className=" flex flex-col">
             {errors.Username && touched.Username && (
@@ -70,7 +78,7 @@ const Register = () => {
               name="Username"
               onChange={handleChange}
               placeholder="Username"
-              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+              className="p-3 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
             />
             {errors.Email && touched.Email && (
               <p className="text-red-500 text-lg sm:text-xl py-3">
@@ -82,7 +90,7 @@ const Register = () => {
               name="Email"
               onChange={handleChange}
               placeholder="Email"
-              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+              className="p-3 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
             />
             {errors.Password && touched.Password && (
               <p className="text-red-500 text-lg sm:text-xl py-3">
@@ -94,11 +102,11 @@ const Register = () => {
               name="Password"
               onChange={handleChange}
               placeholder="Password"
-              className="p-5 border-2 border-gray-400 outline-none rounded-lg text-xl sm:text-2xl lg:text-3xl mb-5"
+              className="p-3 border-2 border-gray-400 outline-none rounded-lg text-md sm:text-xl lg:text-2xl mb-5"
             />
             <button
               type="submit"
-              className="p-5 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
+              className="p-4 bg-black text-white text-xl sm:text-2xl lg:text-3xl rounded-lg mb-5"
             >
               Register
             </button>
@@ -106,7 +114,10 @@ const Register = () => {
           <p className="text-2xl">
             if you have an account please{" "}
             <Link href={"/auth/login"}>
-              <span className="underline text-3xl text-blue-800"> Login</span>
+              <span className="underline text-2xl md:text-3xl text-blue-800">
+                {" "}
+                Login
+              </span>
             </Link>
           </p>
         </div>

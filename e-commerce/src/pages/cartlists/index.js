@@ -5,7 +5,6 @@ import { DELETE_PRODUCT } from "@/state/reducer";
 import { loadStripe } from "@stripe/stripe-js";
 import Paypal_checkout from "@/lib/paypal_checkout";
 import { useRouter } from "next/router";
-import Style from "../../styles/container.module.css";
 
 const Cartlists = () => {
   const router = useRouter();
@@ -19,11 +18,14 @@ const Cartlists = () => {
 
   const deleteCart = async (id, totalPrice) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/delete_from_cart/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Username: userData.Username, id }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/delete_from_cart/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ Username: userData.Username, id }),
+        }
+      );
       const data = await res.json();
       if (data === "Unauthorized" || data === "User not exist") {
         await router.replace("auth/login");
@@ -35,6 +37,7 @@ const Cartlists = () => {
     }
   };
 
+  //!STRIPE Payment Method
   // const handleCheckout = async () => {
   //   const productName =
   //     cart.products.length > 1 ? "Products" : `${cart.products[0].title}`;
@@ -54,10 +57,10 @@ const Cartlists = () => {
   // };
 
   return (
-    <div className={`${Style.container} p-2 sm:p-10 `}>
+    <div className={`h-smaller_767 md:h-bigger_768 p-2 sm:p-10 `}>
       {cart.products.length > 0 && (
         <div>
-          <div className="max-h-[400px] md:max-h-[500px] overflow-y-scroll">
+          <div className="max-h-[250px] md:max-h-[300px] overflow-y-scroll">
             <table className="w-full mb-16">
               <thead className=" text-md sm:text-3xl ">
                 <tr className="p-5 sm:p-10">

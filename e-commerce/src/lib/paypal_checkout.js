@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { useEffect } from "react";
 import {
   PayPalScriptProvider,
   PayPalButtons,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
+import { useDispatch } from "react-redux";
 
 const Paypal_checkout = ({ total }) => {
+  const dispatch = useDispatch();
   // This values are the props in the UI
   const amount = total;
   const currency = "USD";

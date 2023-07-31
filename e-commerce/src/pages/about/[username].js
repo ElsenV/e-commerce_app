@@ -1,14 +1,10 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { CHECK_FOR_USERNAME } from "@/state/reducer";
 import { useRouter } from "next/router";
-import Style from "./about.module.css";
 
 const About = ({ user }) => {
   const router = useRouter();
 
-  const dispatch = useDispatch();
   /**VALIDATION */
   const validation = Yup.object().shape({
     username: Yup.string().required(),
@@ -38,7 +34,7 @@ const About = ({ user }) => {
         );
 
         const data = await res.json();
-        dispatch(CHECK_FOR_USERNAME(data.Username));
+
         router.replace(`/about/${data.Username}`);
       } catch (error) {
         console.error(error);
@@ -49,57 +45,61 @@ const About = ({ user }) => {
   const { errors, touched, values, handleSubmit, handleChange } = formik;
 
   return (
-    <div className={`${Style.container} w-full pt-4 flex justify-center `}>
-      <div className={`${Style.form}`}>
+    <div className={` sm:h-auto w-full pt-4 flex justify-center `}>
+      <div className={`w-[500px] md:w-[700px]`}>
         <form onSubmit={handleSubmit}>
-          <p className="text-xl sm:text-2xl md:text-3xl">Username</p>
+          <p className="text-md sm:text-xl md:text-2xl font-bold pb-2">
+            Username
+          </p>
           {errors.username && touched.username && (
             <p className="text-red-500 pb-1 text-lg">{errors.username}</p>
           )}
           <input
             type="text"
             name="username"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Name,Surname "
             onChange={handleChange}
             value={values.username}
           />
-          <p className="text-xl sm:text-2xl md:text-3xl">Phone</p>
+          <p className="text-md sm:text-xl md:text-2xl font-bold pb-2">Phone</p>
           {errors.Phone && touched.Phone && (
             <p className="text-red-500 pb-1 text-lg">{errors.Phone}</p>
           )}
           <input
             type="text"
             name="Phone"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Phone "
             onChange={handleChange}
             value={values.Phone}
           />
-          <p className="text-xl sm:text-2xl md:text-3xl">Address</p>
+          <p className="text-md sm:text-xl md:text-2xl font-bold pb-2">
+            Address
+          </p>
           {errors.Address && touched.Address && (
             <p className="text-red-500 pb-1 text-lg">{errors.Address}</p>
           )}
           <input
             type="address"
             name="Address"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Address "
             onChange={handleChange}
             value={values.Address}
           />
-          <p className="text-xl sm:text-2xl md:text-3xl">Info</p>
+          <p className="text-md sm:text-xl md:text-2xl font-bold pb-2">Info</p>
           <textarea
-            rows="3"
+            rows="2"
             name="Info"
-            className="w-full  mb-6 p-5 rounded-md outline-none border-2 border-gray-400 resize-none "
+            className="w-full  mb-4 p-5 rounded-md outline-none border-2 border-gray-400 resize-none "
             placeholder="Info"
             onChange={handleChange}
             value={values.Info}
           />
           <button
             type="submit"
-            className="w-full p-5 bg-slate-900 rounded-md text-white text-2xl"
+            className="w-full p-4 bg-slate-900 rounded-md text-white text-md sm:text-xl md:text-2xl mb-5"
           >
             Edit Profile
           </button>
