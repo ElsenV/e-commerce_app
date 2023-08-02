@@ -24,11 +24,14 @@ const AddInfo = ({ Username }) => {
     validationSchema: validation,
     onSubmit: async (values) => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/api/addinfo`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...values, Username }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACK_URL}/api/addinfo`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...values, Username }),
+          }
+        );
         const data = await res.json();
 
         if (data === "Added") {
@@ -55,7 +58,7 @@ const AddInfo = ({ Username }) => {
           <input
             type="text"
             name="nameSurname"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Name,Surname "
             onChange={handleChange}
             value={values.nameSurname}
@@ -67,7 +70,7 @@ const AddInfo = ({ Username }) => {
           <input
             type="text"
             name="Phone"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400  "
             placeholder="Phone "
             onChange={handleChange}
             value={values.Phone}
@@ -79,14 +82,14 @@ const AddInfo = ({ Username }) => {
           <input
             type="address"
             name="Address"
-            className="w-full h-14 mb-5 p-5 rounded-md outline-none border-2 border-gray-400 "
+            className="w-full h-10 mb-5 p-4 rounded-md outline-none border-2 border-gray-400 "
             placeholder="Address "
             onChange={handleChange}
             value={values.Address}
           />
 
           <textarea
-            rows="3"
+            rows="2"
             name="Info"
             className="w-full  mb-6 p-5 rounded-md outline-none border-2 border-gray-400 resize-none "
             placeholder="Info"
@@ -95,7 +98,7 @@ const AddInfo = ({ Username }) => {
           />
           <button
             type="submit"
-            className="w-full p-5 bg-slate-900 rounded-md text-white text-2xl"
+            className="w-full p-4 bg-slate-900 rounded-md text-white text-2xl"
           >
             Add Informations
           </button>

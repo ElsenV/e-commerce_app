@@ -22,6 +22,7 @@ const Navbar = () => {
         `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`
       );
       const data = await res.json();
+
       await router.push("/");
       dispatch(RESET_PRODUCTS());
       return data;
@@ -55,7 +56,7 @@ const Navbar = () => {
           <div className="">
             <div className="flex justify-end">
               <IoClose
-                className="text-3xl sm:text-4xl md:text-5xl text-black cursor-pointer text-right"
+                className="text-2xl sm:text-3xl md:text-4xl text-black cursor-pointer text-right"
                 onClick={() => setShow((prev) => !prev)}
               />
             </div>
@@ -65,20 +66,20 @@ const Navbar = () => {
               {isLogin && (
                 <li className="flex justify-start ">
                   <Link href={`/about/${username}`}>
-                    <p className=" text-2xl sm:text-3xl pt-5">{username}</p>
+                    <p className=" text-xl sm:text-2xl pt-5">{username}</p>
                   </Link>
                 </li>
               )}
 
               {/* CART */}
               {isLogin && (
-                <li className="pt-5 flex justify-center text-2xl sm:text-3xl">
+                <li className="pt-5 flex justify-center text-xl sm:text-2xl">
                   <div className="relative">
                     <Link href={"/cartlists"}>
-                      <IoCartOutline className="absolute right-0 text-5xl cursor-pointer" />
+                      <IoCartOutline className="absolute right-0 text-4xl cursor-pointer" />
                     </Link>
 
-                    <div className="absolute top-[-20px] right-[-10px]">
+                    <div className="absolute top-[-15px] right-[-10px]">
                       {cart}
                     </div>
                   </div>
@@ -91,14 +92,14 @@ const Navbar = () => {
               >
                 {isLogin ? (
                   <IoIosLogOut
-                    className="text-4xl sm:text-5xl cursor-pointer "
+                    className="text-3xl sm:text-4xl cursor-pointer "
                     onClick={() => {
                       logOut();
                     }}
                   />
                 ) : (
                   <Link href={"/auth/login"}>
-                    <IoIosLogIn className="text-5xl cursor-pointer " />
+                    <IoIosLogIn className="text-4xl cursor-pointer " />
                   </Link>
                 )}
               </li>
@@ -109,19 +110,19 @@ const Navbar = () => {
 
       <div className="hidden md:block">
         <div
-          className={`flex justify-between  ${isLogin ? "md:w-72" : "md:w-24"}`}
+          className={`flex justify-between  ${isLogin ? "md:w-48" : "md:w-24"}`}
         >
           <Link href={`/about/${username}`}>
-            {isLogin ? <p className=" text-3xl">{username}</p> : null}
+            {isLogin ? <p className=" text-2xl">{username}</p> : null}
           </Link>
 
           {isLogin && (
             <div className="relative">
               <Link href={"/cartlists"}>
-                <IoCartOutline className="absolute right-0 text-5xl cursor-pointer" />
+                <IoCartOutline className="absolute right-0 text-4xl cursor-pointer" />
               </Link>
 
-              <div className="text-3xl absolute top-[-20px] right-[-10px]">
+              <div className="text-2xl absolute top-[-15px] right-[-10px]">
                 {cart}
               </div>
             </div>
@@ -129,14 +130,14 @@ const Navbar = () => {
 
           {isLogin ? (
             <IoIosLogOut
-              className="text-5xl cursor-pointer "
+              className="text-4xl cursor-pointer "
               onClick={() => {
                 logOut();
               }}
             />
           ) : (
             <Link href={"/auth/login"}>
-              <IoIosLogIn className="text-5xl cursor-pointer " />
+              <IoIosLogIn className="text-4xl cursor-pointer " />
             </Link>
           )}
         </div>

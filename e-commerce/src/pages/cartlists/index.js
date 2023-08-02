@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { DELETE_PRODUCT } from "@/state/reducer";
-import { loadStripe } from "@stripe/stripe-js";
 import Paypal_checkout from "@/lib/paypal_checkout";
 import { useRouter } from "next/router";
 
@@ -12,9 +11,6 @@ const Cartlists = () => {
   const cart = useSelector((state) => state.clickedProduct.cart);
   const userData = useSelector((state) => state.clickedProduct.user_data);
 
-  const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  );
 
   const deleteCart = async (id, totalPrice) => {
     try {
@@ -36,25 +32,6 @@ const Cartlists = () => {
       console.error(error);
     }
   };
-
-  //!STRIPE Payment Method
-  // const handleCheckout = async () => {
-  //   const productName =
-  //     cart.products.length > 1 ? "Products" : `${cart.products[0].title}`;
-
-  //   const res = await fetch("http://localhost:3000/api/checkout_session", {
-  //     method: "POST",
-  //     headers: { "Content-type": "Application/json" },
-  //     body: JSON.stringify({
-  //       totalPrice: cart.total,
-  //       name: productName,
-  //     }),
-  //   });
-  //   const data = await res.json();
-  //   const stripe = await stripePromise;
-
-  //   await stripe.redirectToCheckout({ sessionId: data.id });
-  // };
 
   return (
     <div className={`h-smaller_767 md:h-bigger_768 p-2 sm:p-10 `}>
@@ -108,13 +85,6 @@ const Cartlists = () => {
                 <Paypal_checkout total={cart.total} />
               </div>
 
-              {/* STRIPE PAYMENT */}
-              {/* <button
-                className="bg-orange-500 py-3 px-10 text-md sm:text-3xl text-white rounded-lg"
-                onClick={() => handleCheckout()}
-              >
-                Pay
-              </button> */}
             </div>
           )}
         </div>

@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
       const logout = serialize("Auth", "", {
+        sameSite: "strict",
         maxAge: -1,
         path: "/",
       });
