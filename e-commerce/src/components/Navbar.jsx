@@ -22,10 +22,13 @@ const Navbar = () => {
         `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`
       );
       const data = await res.json();
-
-      await router.push("/");
-      dispatch(RESET_PRODUCTS());
-      return data;
+      
+      if (res.status === 200) {
+        localStorage.removeItem("Username");
+        await router.push("/");
+        dispatch(RESET_PRODUCTS());
+        return data;
+      }
     } catch (error) {
       console.log(error);
     }

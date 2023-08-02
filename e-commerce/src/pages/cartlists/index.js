@@ -11,7 +11,6 @@ const Cartlists = () => {
   const cart = useSelector((state) => state.clickedProduct.cart);
   const userData = useSelector((state) => state.clickedProduct.user_data);
 
-
   const deleteCart = async (id, totalPrice) => {
     try {
       const res = await fetch(
@@ -84,14 +83,13 @@ const Cartlists = () => {
                 {" "}
                 <Paypal_checkout total={cart.total} />
               </div>
-
             </div>
           )}
         </div>
       )}
       {cart.products.length === 0 && (
         <div className="text-center pt-10">
-          <p className="text-2xl sm:text-3xl md:text-6xl">No Product</p>
+          <p className="text-xl sm:text-2xl md:text-5xl">No Product</p>
         </div>
       )}
     </div>
