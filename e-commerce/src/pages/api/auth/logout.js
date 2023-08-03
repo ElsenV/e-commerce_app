@@ -1,7 +1,7 @@
 import { serialize } from "cookie";
 
 export default async function handler(req, res) {
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     try {
       const serialized = serialize("Auth", "", {
         httpOnly: true,
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         path: "/",
       });
       res.setHeader("Set-Cookie", serialized);
-      res.status(200).json("Logged out");
+      res.status(201).json("Logged out");
     } catch (error) {
       res.status(500).json(error);
     }

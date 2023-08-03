@@ -19,15 +19,18 @@ const Navbar = () => {
   const logOut = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`
+        `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/logout`,
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({}),
+        }
       );
-      const data = await res.json();
-      
-      if (res.status === 200) {
+
+      if (res.status === 201) {
         localStorage.removeItem("Username");
         await router.push("/");
         dispatch(RESET_PRODUCTS());
-        return data;
       }
     } catch (error) {
       console.log(error);
