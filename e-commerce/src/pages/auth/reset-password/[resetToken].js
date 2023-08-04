@@ -53,7 +53,9 @@ const ResetPassword = ({ expired, token }) => {
       className={`h-smaller_767 md:h-bigger_768 w-full flex justify-center items-center`}
     >
       {expired ? (
-        <p className="text-6xl">Expired Please try again</p>
+        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+          Expired Please try again
+        </p>
       ) : (
         <div>
           {!passwordChanged ? (

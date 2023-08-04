@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       const user = await User.findOne({ resetPasswordToken: resetToken });
 
       if (!user) {
-        return res.status(498).json("Invalid token");
+        return res.status(498).json("Reset token has expired");
       }
       if (
         user.resetPasswordExp <
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       const user = await User.findOne({ resetPasswordToken: resetToken });
 
       if (!user) {
-        return res.status(498).json("Invalid Token");
+        return res.status(498).json("Reset token has expired");
       }
 
       if (

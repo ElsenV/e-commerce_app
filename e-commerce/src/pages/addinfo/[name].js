@@ -46,11 +46,8 @@ const AddInfo = ({ Username }) => {
   const { errors, touched, values, handleSubmit, handleChange } = formik;
 
   return (
-    <div
-      className="w-full h-smaller_767 md:h-bigger_768 md:grid grid-cols-4 gap-10   p-10"
-      // style={{ height: "calc(100vh - 280px)" }}
-    >
-      <div className=" md:col-span-2 ">
+    <div className="w-full h-smaller_767 md:h-bigger_768 flex justify-center items-center p-5  ">
+      <div className="w-[250px] sm:w-[400px] md:w-[500px] lg:w-[700px]  ">
         <form onSubmit={handleSubmit}>
           {errors.nameSurname && touched.nameSurname && (
             <p className="text-red-500 pb-1 text-lg">{errors.nameSurname}</p>
@@ -98,7 +95,7 @@ const AddInfo = ({ Username }) => {
           />
           <button
             type="submit"
-            className="w-full p-4 bg-slate-900 rounded-md text-white text-2xl"
+            className="w-full p-4 bg-slate-900 rounded-md text-white text-xl sm:text-2xl"
           >
             Add Informations
           </button>

@@ -59,7 +59,7 @@ const Register = () => {
         Object.keys(errors).length > 0 || Error
           ? `h-register_page`
           : `h-smaller_767 md:h-bigger_768`
-      }    w-full flex justify-center items-center flex-col`}
+      }    w-full flex justify-center items-center flex-col p-5`}
     >
       {!loading && (
         <div>

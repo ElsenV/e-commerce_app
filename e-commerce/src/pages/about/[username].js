@@ -46,7 +46,7 @@ const About = ({ user }) => {
 
   return (
     <div className={` sm:h-auto w-full pt-4 flex justify-center `}>
-      <div className={`w-[500px] md:w-[700px]`}>
+      <div className={`w-[250px] sm:w-[400px] md:w-[500px] lg:w-[700px]`}>
         <form onSubmit={handleSubmit}>
           <p className="text-md sm:text-xl md:text-2xl font-bold pb-2">
             Username

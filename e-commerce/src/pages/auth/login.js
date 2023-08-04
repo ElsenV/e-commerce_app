@@ -78,11 +78,11 @@ const Login = ({ allProducts }) => {
   const { values, errors, touched, handleSubmit, handleChange } = formik;
   return (
     <div
-      className={`h-smaller_767 md:h-bigger_768 w-full flex  justify-center items-center flex-col`}
+      className={`h-smaller_767 md:h-bigger_768 w-full flex  justify-center items-center flex-col p-5`}
     >
       {!loading && (
         <div>
-          <p className="text-2xl sm:text-3xl md:text-5xl font-bold text-center mb-5">
+          <p className="text-xl sm:text-2xl md:text-4xl font-bold text-center mb-5">
             Login
           </p>
           {Error && (
